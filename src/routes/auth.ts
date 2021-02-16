@@ -1,15 +1,28 @@
-import { json, Request, Response, Router } from "express";
+import { Request, Response, Router } from "express";
 import User from "../entities/User";
 import { isEmpty, validate } from 'class-validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
 import auth from '../middleware/auth';
+
+const mappedErrors = (errors: Object[]) => {
+    // let mappedErrors:any = {};
+    // errors.forEach((e: any) => {
+    //     const key = e.property;
+    //     const value = Object.entries(e.constraints)[0][1];
+    //     mappedErrors[key] = value;
+    // });
+
+    return errors.reduce((prev: any, err: any) => {
+        prev[err.property] = Object.entries(err.constraints)[0][1];
+        return prev;
+    }, {});
+}
+
 const register = async (req: Request, res:Response) => {
     const { username, password, email } = req.body;
     try {
-        const user = new User({ username, password, email });
-
         // 验证数据
         let errors: any = {};
         const emailUser = await User.findOne({ email });
@@ -19,8 +32,13 @@ const register = async (req: Request, res:Response) => {
         if (Object.keys(errors).length > 0) {
             return res.status(400).json(errors);
         }
+        // Create User
+        const user = new User({ username, password, email });
         errors = await validate(user);
-        if (errors.length > 0) return res.status(400).json({ errors  });
+        if (errors.length > 0) {
+
+            return res.status(400).json(mappedErrors(errors));
+        }
         await user.save();
 
         // Return the user
@@ -59,17 +77,17 @@ const login = async (req: Request, res: Response) => {
         }));
         return res.json(user);
     } catch (error) {
-        console.log(error);
-        
+        console.log(error); 
+        return res.status(500).json({ error: 'Something in the login func' });
     }
 }
 
 // 返回给用户验证状态,是否验证成功
-const me = (req: Request, res: Response) => {
+const me = (_: Request, res: Response) => {
     return res.json(res.locals.user);
 }
 
-const logout = (req: Request, res: Response) => {
+const logout = (_: Request, res: Response) => {
     res.set('Set-Cookie', cookie.serialize('token', '', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
