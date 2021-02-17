@@ -12,3 +12,7 @@ Steps to run this project:
 - Typeorm
 - TypeScript
 - Postgresql
+
+## Frontend
+- NextJS
+- FontAwsome
