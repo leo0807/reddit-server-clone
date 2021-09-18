@@ -21,7 +21,9 @@ export function slugfy (str:string):string {
 
     str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
         .replace(/\s+/g, '-') // collapse whitespace and replace by -
-        .replace(/-+/g, '-'); // collapse dashes
-
+        .replace(/-+/g, '-') // collapse dashes
+        .replace(/^-+/, '') // trim - from start of text
+        .replace(/-+$/, '') // trim - from end of text
+        .replace(/-/g, '_');
     return str;
 }

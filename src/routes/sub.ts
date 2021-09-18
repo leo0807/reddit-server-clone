@@ -16,7 +16,7 @@ const createSub = async (req: Request, res: Response) => {
         if (isEmpty(title)) errors.Title = 'Title must not be empty';
 
         const sub = await getRepository(Sub)
-            .createQueryBuilder('sub')
+        .createQueryBuilder('sub') // sub是此SQL语句的别名  
             .where('lower(sub.name) = :name', { name: name.toLowerCase() })
             .getOne();
         if (sub) errors.name = 'Sub existed already';

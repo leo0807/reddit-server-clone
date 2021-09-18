@@ -8,15 +8,16 @@ import user from '../middleware/user'
 
 const createPost = async (req: Request, res: Response) => {
   const { title, body, sub } = req.body
-
+  // 获取 res 中的user
   const user = res.locals.user
-
+  console.log(title, body, sub )
   if (title.trim() === '') {
     return res.status(400).json({ title: 'Title must not be empty' })
   }
 
   try {
     // find sub
+    // 没有找到就直接报错
     const subRecord = await Sub.findOneOrFail({ name: sub })
 
     const post = new Post({ title, body, user, sub: subRecord })
@@ -50,6 +51,7 @@ const getPosts = async (_: Request, res: Response) => {
 const getPost = async (req: Request, res: Response) => {
   const { identifier, slug } = req.params
   try {
+    // 没有找到就直接报错
     const post = await Post.findOneOrFail(
       { identifier, slug },
       { relations: ['sub'] }

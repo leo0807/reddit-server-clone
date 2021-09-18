@@ -15,7 +15,7 @@ import Sub from './Sub'
 import Comment from './Comment'
 import { Exclude, Expose } from 'class-transformer'
 import Vote from './Vote'
-
+// typeorm entity:create --name Post
 @TOEntity('posts')
 export default class Post extends Entity {
   constructor(post: Partial<Post>) {

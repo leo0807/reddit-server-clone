@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import User from "../entities/User";
-import { isEmpty, validate } from 'class-validator';
+import { isEmpty, validate } from 'class-validator'; //Validation 检查
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
@@ -40,7 +40,7 @@ const register = async (req: Request, res:Response) => {
 
             return res.status(400).json(mappedErrors(errors));
         }
-        await user.save();
+        await user.save(); //将user存入数据库
 
         // Return the user
         return res.json(user);
@@ -52,7 +52,6 @@ const register = async (req: Request, res:Response) => {
 
 const login = async (req: Request, res: Response) => {
     const { username, password } = req.body;
-
     try {
         let errors: any = {};
         if (isEmpty(username)) errors.username = 'Username must not empty';
@@ -68,11 +67,12 @@ const login = async (req: Request, res: Response) => {
             return res.status(401).json({ password: 'Password Incorrect' });
         }
 
-        const token = jwt.sign({ username }, process.env.JWT_ACCESS_TOKEN!);
+        const token = jwt.sign({ username }, process.env.JWT_SECRET!);
+        // token是cookie的名字
         res.set('Set-Cookie', cookie.serialize('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            httpOnly: true, // 不可被JS访问
+            secure: process.env.NODE_ENV === 'production', // 如果为true，只在HTTPS的情况下使用
+            sameSite: 'strict', // cookie只能用于此domain
             maxAge: 3600,
             path: '/' //cookie 验证的路径 ，这里是整个app都可以用 ，没有这项的话则只在/auth/login是合法的
         }));
@@ -87,7 +87,7 @@ const login = async (req: Request, res: Response) => {
 const me = (_: Request, res: Response) => {
     return res.json(res.locals.user);
 }
-
+// 重置cookie
 const logout = (_: Request, res: Response) => {
     res.set('Set-Cookie', cookie.serialize('token', '', {
         httpOnly: true,
@@ -103,6 +103,6 @@ const logout = (_: Request, res: Response) => {
 const router = Router();
 router.post('/register', register);
 router.post('/login', login);
-router.post('/me', user, auth,me);
-router.post('/logout', user, auth,logout);
+router.post('/me', user, auth, me); // auth作中间件
+router.post('/logout', user, auth, logout);
 export default router;
