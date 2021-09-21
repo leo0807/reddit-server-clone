@@ -14,7 +14,7 @@ import User from './User'
 
 import { makeId } from '../util/helpers'
 import Vote from './Vote'
-import { Exclude } from 'class-transformer'
+import { Exclude, Expose } from 'class-transformer'
 
 @TOEntity('comments')
 export default class Comment extends Entity {
@@ -41,7 +41,7 @@ export default class Comment extends Entity {
   post: Post
 
   @Exclude()
-  @OneToMany(() => Vote, vote => vote.post)
+  @OneToMany(() => Vote, vote => vote.comment)
   votes: Vote[]
 
   protected userVote: number
@@ -50,7 +50,9 @@ export default class Comment extends Entity {
     const index = this.votes?.findIndex(v => v.username === user.username);
     this.userVote = index > -1 ? this.votes[index].value : 0;
   }
-    
+  @Expose() get voteScore(): number {
+    return this.votes?.reduce((prev, curr) => prev + (curr.value || 0), 0);
+  }
   @BeforeInsert()
   makeIdAndSlug() {
     this.identifier = makeId(8)

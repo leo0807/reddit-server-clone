@@ -37,7 +37,6 @@ const register = async (req: Request, res:Response) => {
         const user = new User({ username, password, email });
         errors = await validate(user);
         if (errors.length > 0) {
-
             return res.status(400).json(mappedErrors(errors));
         }
         await user.save(); //将user存入数据库

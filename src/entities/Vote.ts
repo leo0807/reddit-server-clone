@@ -1,11 +1,11 @@
-import {Entity as TOENTITY, Column, ManyToOne, JoinColumn} from "typeorm";
+import {Entity as TOEntity, Column, ManyToOne, JoinColumn} from "typeorm";
 import Comment from "./Comment";
 import Entity from './Entity';
 import Post from "./Post";
 import User from './User';
 
-@TOENTITY('votes')
-export default class Vote  extends Entity{
+@TOEntity('votes')
+export default class Vote extends Entity{
 
     constructor(vote: Partial<Vote>) {
         super();
@@ -16,7 +16,7 @@ export default class Vote  extends Entity{
     value: number
 
     @ManyToOne(() => User)
-    @JoinColumn({ name: 'usernmae', referencedColumnName: 'username' })
+    @JoinColumn({ name: 'username', referencedColumnName: 'username' })
     user: User
     
     @Column()
@@ -30,3 +30,4 @@ export default class Vote  extends Entity{
 
 
 }
+

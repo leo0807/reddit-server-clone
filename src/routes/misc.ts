@@ -27,7 +27,7 @@ const vote = async (req: Request, res: Response) => {
         } else {
             // 如果没有commentIdentifier 找user在这个post中的comment
             // Find vote by the post
-            vote = await Vote.findOne({ user, comment });
+            vote = await Vote.findOne({ user, post });
         }
 
         if (!vote && value === 0) {
@@ -64,5 +64,5 @@ const vote = async (req: Request, res: Response) => {
 }
 
 const router = Router();
-router.post('/', user,auth, vote);
+router.post('/vote', user, auth, vote);
 export default router;

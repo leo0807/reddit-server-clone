@@ -11,3 +11,5 @@ export default async (_: Request, res: Response, next: NextFunction) => {
         return res.status(401).json({ error: 'Unauthenticated' });
     }
 }
+
+// 将用户登陆态中间件分为两部分，是为了有些情况，不需要用户登陆也可以使用

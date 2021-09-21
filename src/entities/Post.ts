@@ -56,7 +56,7 @@ export default class Post extends Entity {
   comments: Comment[]
 
   @Exclude()
-  @OneToMany(() => Vote, vote => vote.comment)
+  @OneToMany(() => Vote, vote => vote.post)
   votes: Vote[]
 
 
@@ -65,11 +65,11 @@ export default class Post extends Entity {
     return `/r/${this.subName}/${this.identifier}/${this.slug}`;
   }
 
-  @Expose() get comentsCount(): number{
+  @Expose() get commentCount(): number{
     return this.comments?.length;
   }
 
-  @Expose() getvoteScore(): number{
+  @Expose() get voteScore(): number{
     return this.votes?.reduce((prev, cur)=> prev + (cur.value|| 0), 0);
   }
   // 用于 前端页面链接
@@ -79,6 +79,7 @@ export default class Post extends Entity {
   //   this.url = `/r/${this.subName}/${this.identifier}/${this.slug}`
   // }
 
+  // 当前用户对一个post是否已经vote了
   protected userVote: number
   setUserVote(user: User) {
     // 取评论和用户的交集， 找到用户是否有对该Post进行vote的行为
