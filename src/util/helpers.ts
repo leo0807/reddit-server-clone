@@ -8,7 +8,7 @@ export function makeId(length:number):string {
    return result;
 }
 
-export function slugfy (str:string):string {
+export function slugify (str:string):string {
     str = str.replace(/^\s+|\s+$/g, ''); // trim
     str = str.toLowerCase();
   

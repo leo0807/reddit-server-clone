@@ -1,7 +1,7 @@
-import { Router, Request, Response } from 'express'
-import Comment from '../entities/Comment'
-import Post from '../entities/Post'
-import Sub from '../entities/Sub'
+import { Router, Request, Response } from 'express';
+import Comment from '../entities/Comment';
+import Post from '../entities/Post';
+import Sub from '../entities/Sub';
 
 import auth from '../middleware/auth'
 import user from '../middleware/user'
@@ -54,7 +54,7 @@ const getPost = async (req: Request, res: Response) => {
     // 没有找到就直接报错
     const post = await Post.findOneOrFail(
       { identifier, slug },
-      { relations: ['sub'] }
+      { relations: ['sub', 'votes'] }
     )
 
     return res.json(post)
@@ -76,13 +76,16 @@ const commentOnPost = async (req: Request, res: Response) => {
       user: res.locals.user,
       post,
     })
+    if (res.locals.user) {
+      post.setUserVote(res.locals.user);
+    }
 
-    await comment.save()
+    await comment.save();
 
-    return res.json(comment)
+    return res.json(comment);
   } catch (err) {
     console.log(err)
-    return res.status(404).json({ error: 'Post not found' })
+    return res.status(404).json({ error: 'Post not found' });
   }
 }
 
@@ -90,7 +93,7 @@ const router = Router()
 
 router.post('/', user, auth, createPost)
 router.get('/', user, getPosts)
-router.get('/:identifier/:slug', getPost)
+router.get('/:identifier/:slug', user, getPost)
 router.post('/:identifier/:slug/comments', user, auth, commentOnPost)
 
 export default router

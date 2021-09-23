@@ -102,6 +102,6 @@ const logout = (_: Request, res: Response) => {
 const router = Router();
 router.post('/register', register);
 router.post('/login', login);
-router.post('/me', user, auth, me); // auth作中间件
-router.post('/logout', user, auth, logout);
+router.get('/me', user, auth, me); // auth作中间件
+router.get('/logout', user, auth, logout);
 export default router;

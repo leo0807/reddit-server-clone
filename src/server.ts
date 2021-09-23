@@ -6,7 +6,7 @@ import morgan from 'morgan';
 
 import authRoutes from './routes/auth';
 import postsRoutes from './routes/posts';
-import subsRoutes from './routes/sub';
+import subsRoutes from './routes/subs';
 import miscRoutes from './routes/misc';
 
 import trim from './middleware/trim';
@@ -16,6 +16,8 @@ import cors from 'cors';
 dotenv.config();
 
 const app = express();
+// 使得public中文件被expose，可以被访问
+app.use(express.static('public'));
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(trim);
