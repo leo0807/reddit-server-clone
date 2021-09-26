@@ -41,29 +41,34 @@ const createSub = async (req: Request, res: Response) => {
         
     }
 }
-const getSub = async (req: Request, res: Response) => {
-    const name = req.params.name;
-            console.log(name);
+const getSubs = async (req: Request, res: Response) => {
+  const name = req.params.name;
 
-    try {
-        const sub = await Sub.findOneOrFail({ name });
-        
-        const posts = await Post.find({
-            where: { sub },
-            order: { createdAt: 'DESC' },
-            relations: ['comments', 'votes']
-        });
-        sub.posts = posts
-        // 如果当前状态有user登陆，则显示此user在筛选出来的posts中的vote
-        if (res.locals.user) {
-            sub.posts.forEach((p) => p.setUserVote(res.locals.users));
-        }
-        return res.json(sub);
-    } catch(err) {
-        console.log(111,err);
-        return res.status(404).json({ error: 'Sub not found' });
+  try {
+    const sub = await Sub.findOneOrFail({ name });
+
+    //Sub was found, and now fetch data
+    const posts = await Post.find({
+      where: { sub },
+      order: { createdAt: "DESC" },
+      relations: ["comments", "votes"],
+    });
+
+    sub.posts = posts;
+
+    //Validate if posts is from user logged
+    if (res.locals.user) {
+      sub.posts.forEach((e) => {
+        e.setUserVote(res.locals.user);
+      });
     }
-}
+
+    return res.json(sub);
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({ sub: "Sub not found" });
+  }
+};
 const ownSub = async (req: Request, res: Response, next: NextFunction) => {
     const user: User = res.locals.user;
     try {
@@ -128,9 +133,25 @@ const uploadSubImage = async (req: Request, res: Response) => {
         return res.status(500).json({ error: 'Something went wrong' });
     }
 }
+const searchSubs = async (req: Request, res: Response) => {
+    try {
+        const name = req.params.name;
+        if (isEmpty(name)) {
+            return res.status(400).json({ error: 'Name must not be empty'});
+        }
+        const subs = await getRepository(Sub)
+            .createQueryBuilder()
+            .where('LOWER(name) LIKE :name', { name: `%${name.toLowerCase().trim()}%` })
+            .getMany();
+        return res.json(subs);
+    } catch (err) {
+        return res.status(500).json({ error: 'Something went wrong at searchSubs' });
+    }
+};
 
 const router = Router();
 router.post('/', user, auth, createSub);
-router.get('/:name', user, getSub);
+router.get('/:name', user, getSubs);
+router.get('/search/:name', searchSubs);
 router.post('/:name/image', user, auth, ownSub, upload.single('file'), uploadSubImage);
 export default router;

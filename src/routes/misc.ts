@@ -64,6 +64,7 @@ const vote = async (req: Request, res: Response) => {
         return res.status(500).json({error: 'Error happend at misc.ts'});
     }
 }
+// 根据SQL获取top subs
 const topSubs = async (_: Request, res: Response) => {
     try {
         const imageUrlExp = `COALESCE('${process.env.APP_URL}/images/' || s."imageUrn",

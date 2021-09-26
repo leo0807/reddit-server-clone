@@ -8,6 +8,7 @@ import authRoutes from './routes/auth';
 import postsRoutes from './routes/posts';
 import subsRoutes from './routes/subs';
 import miscRoutes from './routes/misc';
+import userRoutes from './routes/users';
 
 import trim from './middleware/trim';
 import dotenv from 'dotenv';
@@ -35,6 +36,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/posts', postsRoutes);
 app.use('/api/subs', subsRoutes);
 app.use('/api/misc', miscRoutes);
+app.use('/api/users', userRoutes);
 
 app.listen(process.env.PORT, async () => {
     console.log(`Server is running at${process.env.PORT}`);
