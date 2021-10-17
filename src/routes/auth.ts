@@ -77,7 +77,7 @@ const login = async (req: Request, res: Response) => {
         }));
         return res.json(user);
     } catch (error) {
-        console.log(error); 
+        console.log(error,username, password); 
         return res.status(500).json({ error: 'Something in the login func' });
     }
 }
