@@ -37,9 +37,7 @@
       "typeorm-seeding": "^1.6.1"
    },
    "scripts": {
-      "start": "node build/src/server.js",
-      "build": "tsc",
-      "postinstall": "npm run build",
+      "start": "ts-node src/server.ts",
       "server": "nodemon --exec ts-node src/server.ts",
       "client": "cd ../reddit-client && npm run dev",
       "typeorm": "ts-node ./node_modules/typeorm/cli.js",
