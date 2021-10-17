@@ -75,10 +75,11 @@ const login = async (req: Request, res: Response) => {
             maxAge: 3600,
             path: '/' //cookie 验证的路径 ，这里是整个app都可以用 ，没有这项的话则只在/auth/login是合法的
         }));
+        console.log(username, password);
+        
         return res.json(user);
     } catch (error) {
-        console.log(error,username, password); 
-        return res.status(500).json({ error: 'Something in the login func' });
+        return res.status(500).json({ error: `Something in the login func, where u & p are ${username}, ${password}` });
     }
 }
 
