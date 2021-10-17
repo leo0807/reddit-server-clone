@@ -39,7 +39,7 @@ app.use('/api/misc', miscRoutes);
 app.use('/api/users', userRoutes);
 
 app.listen(process.env.PORT, async () => {
-    console.log(`Server is running at${process.env.PORT}`);
+    console.log(`Server is running at${process.env.PORT || 5000}`);
     try {
         await createConnection();
         console.log('Database connected!');

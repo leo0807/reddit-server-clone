@@ -1,10 +1,10 @@
 {
    "type": "postgres",
-   "host": "ec2-54-172-169-87.compute-1.amazonaws.com",
+   "host": "localhost",
    "port": 5432,
-   "username": "tnjxxmgzepzpwd",
-   "password": "9710ef9e083109935edb2c45b9550014615ea61cf1ffd57c2930a8fd99a7df77",
-   "database": "d13lnhiigmr4pn",
+   "username": "postgres",
+   "password": "Aa416260!",
+   "database": "reddit",
    "synchronize": true,
    "logging": true,
    "entities": [
