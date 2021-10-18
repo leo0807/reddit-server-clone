@@ -27,8 +27,9 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({
     credentials: true,
     // origin: process.env.ORIGIN || 'https://sleepy-anchorage-83122.herokuapp.com',
-    origin: 'https://reddit-clone-client-4fgorxhp6-leo0807.vercel.app',
+    origin: 'reddit-clone-client-6qe8rc0jg-leo0807.vercel.app',
     // origin: '*',
+    
     optionsSuccessStatus: 200, // request被发送之前的状态 optional
 }));
 // npm run typeorm schema:drop
