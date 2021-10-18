@@ -80,7 +80,7 @@ const login = async (req: Request, res: Response) => {
         return res.json(user);
     } catch (error) {
         return res.status(500).json({
-            error: `Something in the login func, where u & p are ${username} ${password}`);
+            error: `Something in the login func, where u & p are ${username} ${password}`});
     }
 }
 
