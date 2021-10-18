@@ -5,6 +5,9 @@
    "username": "tnjxxmgzepzpwd",
    "password": "9710ef9e083109935edb2c45b9550014615ea61cf1ffd57c2930a8fd99a7df77",
    "database": "d13lnhiigmr4pn",
+   "ssl": { 
+        "rejectUnauthorized": false 
+    } ,
    "synchronize": true,
    "logging": true,
    "entities": [
