@@ -78,11 +78,10 @@ const login = async (req: Request, res: Response) => {
 
         return res.json(user);
     } catch (error) {
-        console.log(error,process.env.NODE_ENV, process.env);
-        
         return res.status(500).json({
             error: `Something in the login func, where u & p are ${username} ${password}`,
-            process:process.env
+            process: process.env,
+            jwt: process.env.JWT_SECRET
         });
     }
 }
