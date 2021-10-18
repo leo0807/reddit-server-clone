@@ -66,7 +66,8 @@ const login = async (req: Request, res: Response) => {
             return res.status(401).json({ password: 'Password Incorrect' });
         }
 
-        const token = jwt.sign({ username }, process.env.JWT_SECRET!);
+        // const token = jwt.sign({ username }, process.env.JWT_SECRET!);
+        const token = jwt.sign({ username }, 'randomstring');
         // token是cookie的名字
         res.set('Set-Cookie', cookie.serialize('token', token, {
             httpOnly: true, // 不可被JS访问
@@ -80,7 +81,7 @@ const login = async (req: Request, res: Response) => {
     } catch (error) {
         return res.status(500).json({
             error: `Something in the login func, where u & p are ${username} ${password}`,
-            process: process.env,
+            process: process.env.JWT_SECRET,
             jwt: process.env.JWT_SECRET
         });
     }
