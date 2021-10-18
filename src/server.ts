@@ -23,10 +23,11 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(trim);
 app.use(cookieParser());
+const PORT = process.env.PORT || 5000;
 app.use(cors({
     credentials: true,
     // origin: process.env.ORIGIN || 'https://sleepy-anchorage-83122.herokuapp.com',
-    origin: 'https://sleepy-anchorage-83122.herokuapp.com',
+    origin: 'https://reddit-clone-client-d0czn4cnr-leo0807.vercel.app',
     // origin: '*',
     optionsSuccessStatus: 200, // request被发送之前的状态 optional
 }));
@@ -39,7 +40,7 @@ app.use('/api/posts', postsRoutes);
 app.use('/api/subs', subsRoutes);
 app.use('/api/misc', miscRoutes);
 app.use('/api/users', userRoutes);
-const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, async () => {
     console.log(`Server is running at${PORT}`);
     try {
