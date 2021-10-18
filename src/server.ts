@@ -25,7 +25,7 @@ app.use(trim);
 app.use(cookieParser());
 app.use(cors({
     credentials: true,
-    origin: process.env.ORIGIN,
+    // origin: process.env.ORIGIN,
     optionsSuccessStatus: 200, // request被发送之前的状态 optional
 }));
 // npm run typeorm schema:drop
